@@ -23,9 +23,9 @@ ext {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation "org.springframework:spring-test:$springVersion"
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
     implementation("org.springframework:spring-jdbc:$springVersion")
     implementation("org.springframework:spring-web:$springVersion")
@@ -41,6 +41,9 @@ dependencies {
     implementation("org.apache.tomcat.embed:tomcat-embed-jasper:$tomcatVersion")
     implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
+
+    // mockito
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
 }
 
 test {
