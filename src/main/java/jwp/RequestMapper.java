@@ -1,6 +1,9 @@
 package jwp;
 
 import jwp.controller.Controller;
+import jwp.controller.HomeController;
+
+import jwp.controller.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +14,13 @@ public class RequestMapper {
     private final Map<String, Controller> controllerMap = new HashMap<>();
 
     private RequestMapper() {
-        // todo: URL-Controller 매핑을 등록할 예정
+        controllerMap.put("/", new HomeController());
+        controllerMap.put("/user/login", new LoginUserController());
+        controllerMap.put("/user/logout", new LogoutUserController());
+        controllerMap.put("/user/signup", new CreateUserController());
+        controllerMap.put("/user/list", new ListUserController());
+        controllerMap.put("/user/updateForm", new UpdateUserFormController());
+        controllerMap.put("/user/update", new UpdateUserController());
     }
 
     public static RequestMapper getInstance() {

@@ -4,6 +4,7 @@ import jwp.controller.Controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import java.io.IOException;
  *   3. Controller 실행
  *   4. 반환된 viewName을 redirect 또는 forward 처리
  */
+@WebServlet("/")
 public class DispatcherServlet extends HttpServlet {
 
     @Override
