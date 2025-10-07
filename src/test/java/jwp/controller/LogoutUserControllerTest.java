@@ -7,12 +7,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,15 +35,15 @@ class LogoutUserControllerTest {
 
     @Test
     @DisplayName("로그아웃 시 세션에서 사용자 정보를 삭제하고 메인 페이지로 리다이렉트한다")
-    void logoutSuccess() throws ServletException, IOException {
+    void logoutSuccess() throws Exception {
         // given
         when(request.getSession()).thenReturn(session);
 
         // when
-        controller.doGet(request, response);
+        String viewName = controller.service(request, response);
 
         // then
+        assertEquals("redirect:/", viewName);
         verify(session).removeAttribute("user");
-        verify(response).sendRedirect("/");
     }
 }

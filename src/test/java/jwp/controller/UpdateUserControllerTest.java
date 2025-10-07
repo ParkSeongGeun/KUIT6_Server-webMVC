@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,11 +53,15 @@ class UpdateUserControllerTest {
         when(request.getParameter("name")).thenReturn(newName);
         when(request.getParameter("email")).thenReturn(newEmail);
 
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("user")).thenReturn(originalUser);
+
         // when
-        controller.doPost(request, response);
+        String view = controller.service(request, response);
 
         // then
-        verify(response).sendRedirect("/user/list");
+        assertEquals("redirect:/user/list", view);
 
         // 저장소에서 업데이트된 사용자 정보 확인
         User updatedUser = MemoryUserRepository.getInstance().findUserById(userId);
@@ -73,15 +78,17 @@ class UpdateUserControllerTest {
         String userId = "nonexistent";
 
         when(request.getParameter("userId")).thenReturn(userId);
-        when(request.getParameter("password")).thenReturn("password");
-        when(request.getParameter("name")).thenReturn("이름");
-        when(request.getParameter("email")).thenReturn("email@example.com");
+
+        HttpSession session = mock(HttpSession.class);
+        User sessionUser = new User("sessionUser", "password", "name", "email@email.com");
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("user")).thenReturn(sessionUser);
 
         // when
-        controller.doPost(request, response);
+        String view = controller.service(request, response);
 
         // then
-        verify(response).sendRedirect("/user/list");
+        assertEquals("redirect:/user/list", view);
 
         // 사용자가 여전히 존재하지 않음을 확인
         User user = MemoryUserRepository.getInstance().findUserById(userId);

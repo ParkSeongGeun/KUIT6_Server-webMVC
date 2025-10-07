@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,15 +50,11 @@ class UpdateUserFormControllerTest {
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("user")).thenReturn(sessionUser);
         when(request.getParameter("userId")).thenReturn(userId);
-        when(request.getRequestDispatcher("/user/updateForm.jsp")).thenReturn(requestDispatcher);
-
         // when
-        controller.doGet(request, response);
+        String view = controller.service(request, response);
 
         // then
-        verify(request).getRequestDispatcher("/user/updateForm.jsp");
-        verify(requestDispatcher).forward(request, response);
-        verify(response, never()).sendRedirect(anyString());
+        assertEquals("/user/updateForm.jsp", view);
     }
 
     @Test
@@ -73,11 +70,10 @@ class UpdateUserFormControllerTest {
         when(request.getParameter("userId")).thenReturn(requestUserId);
 
         // when
-        controller.doGet(request, response);
+        String view = controller.service(request, response);
 
         // then
-        verify(response).sendRedirect("/");
-        verify(request, never()).getRequestDispatcher(anyString());
+        assertEquals("redirect:/", view);
     }
 
     @Test
@@ -91,10 +87,9 @@ class UpdateUserFormControllerTest {
         when(request.getParameter("userId")).thenReturn(requestUserId);
 
         // when
-        controller.doGet(request, response);
+        String view = controller.service(request, response);
 
         // then
-        verify(response).sendRedirect("/");
-        verify(request, never()).getRequestDispatcher(anyString());
+        assertEquals("redirect:/", view);
     }
 }

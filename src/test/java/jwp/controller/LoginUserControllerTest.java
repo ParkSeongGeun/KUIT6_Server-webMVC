@@ -9,12 +9,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +37,7 @@ class LoginUserControllerTest {
 
     @Test
     @DisplayName("로그인 성공 시 세션에 사용자 정보를 저장하고 메인 페이지로 리다이렉트한다")
-    void loginSuccess() throws ServletException, IOException {
+    void loginSuccess() throws Exception {
         // given
         String userId = "gildong";
         String password = "password";
@@ -52,16 +51,16 @@ class LoginUserControllerTest {
         when(request.getSession()).thenReturn(session);
 
         // when
-        controller.doPost(request, response);
+        String viewName = controller.service(request, response);
 
         // then
+        assertEquals("redirect:/", viewName);
         verify(session).setAttribute("user", user);
-        verify(response).sendRedirect("/");
     }
 
     @Test
     @DisplayName("로그인 실패 시 로그인 실패 페이지로 리다이렉트한다 - 잘못된 비밀번호")
-    void loginFailWithWrongPassword() throws ServletException, IOException {
+    void loginFailWithWrongPassword() throws Exception {
         // given
         String userId = "gildong";
         String correctPassword = "password";
@@ -75,16 +74,16 @@ class LoginUserControllerTest {
         when(request.getParameter("password")).thenReturn(wrongPassword);
 
         // when
-        controller.doPost(request, response);
+        String viewName = controller.service(request, response);
 
         // then
-        verify(response).sendRedirect("/user/loginFailed.jsp");
+        assertEquals("redirect:/user/loginFailed.jsp", viewName);
         verify(request, never()).getSession();
     }
 
     @Test
     @DisplayName("로그인 실패 시 로그인 실패 페이지로 리다이렉트한다 - 존재하지 않는 사용자")
-    void loginFailWithNonExistentUser() throws ServletException, IOException {
+    void loginFailWithNonExistentUser() throws Exception {
         // given
         String userId = "nonexistent";
         String password = "password";
@@ -93,10 +92,10 @@ class LoginUserControllerTest {
         when(request.getParameter("password")).thenReturn(password);
 
         // when
-        controller.doPost(request, response);
+        String viewName = controller.service(request, response);
 
         // then
-        verify(response).sendRedirect("/user/loginFailed.jsp");
+        assertEquals("redirect:/user/loginFailed.jsp", viewName);
         verify(request, never()).getSession();
     }
 }
