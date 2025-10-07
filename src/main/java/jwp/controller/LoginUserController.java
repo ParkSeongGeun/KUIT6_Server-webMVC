@@ -20,6 +20,12 @@ public class LoginUserController implements Controller {
 
     @Override
     public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // GET 요청: 로그인 폼 보여주기
+        if ("GET".equals(request.getMethod())) {
+            return "/user/login.jsp";
+        }
+
+        // POST 요청: 로그인 처리
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
 

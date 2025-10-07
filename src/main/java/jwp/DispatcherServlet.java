@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *   1. URL 추출
@@ -18,6 +20,8 @@ import java.io.IOException;
  */
 @WebServlet("/")
 public class DispatcherServlet extends HttpServlet {
+    // 로그 확인용
+    private static final Logger log = Logger.getLogger(DispatcherServlet.class.getName());
 
     @Override
     protected void service(
@@ -25,12 +29,14 @@ public class DispatcherServlet extends HttpServlet {
             HttpServletResponse resp
     ) throws ServletException, IOException {
         String requestURI = req.getRequestURI();
+        log.log(Level.INFO, "Request URI: " + requestURI);
 
         // RequestMapper -> URL: Controller 매핑
         RequestMapper mapper = RequestMapper.getInstance();
         Controller controller = mapper.getController(requestURI);
 
         if (controller == null) {
+            log.log(Level.WARNING, "Controller not found for URI: " + requestURI);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

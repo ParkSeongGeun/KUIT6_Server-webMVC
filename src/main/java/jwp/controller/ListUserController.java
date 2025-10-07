@@ -24,7 +24,7 @@ public class ListUserController implements Controller {
 
         // 로그인하지 않은 경우 로그인 페이지로 리다이렉트
         if (value == null) {
-            return "redirect:/user/login.html";
+            return "redirect:/user/login";
         }
 
         // 로그인한 경우 사용자 목록 조회
