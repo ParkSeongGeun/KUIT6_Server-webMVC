@@ -43,7 +43,7 @@ public class DispatcherServlet extends HttpServlet {
 
         try {
             // Controller -> viewName 받기
-            String viewName = controller.service(req, resp);
+            String viewName = controller.process(req, resp);
 
             // redirect / forward 처리
             move(viewName, req, resp);

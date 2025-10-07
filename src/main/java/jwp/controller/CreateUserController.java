@@ -11,7 +11,7 @@ import java.io.IOException;
 public class CreateUserController implements Controller {
 
     @Override
-    public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),

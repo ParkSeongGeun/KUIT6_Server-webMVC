@@ -19,7 +19,7 @@ import java.io.IOException;
 public class UpdateUserFormController implements Controller {
 
     @Override
-    public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute("user");
         String requestUserId = request.getParameter("userId");

@@ -51,7 +51,7 @@ class LoginUserControllerTest {
         when(request.getSession()).thenReturn(session);
 
         // when
-        String viewName = controller.service(request, response);
+        String viewName = controller.process(request, response);
 
         // then
         assertEquals("redirect:/", viewName);
@@ -74,7 +74,7 @@ class LoginUserControllerTest {
         when(request.getParameter("password")).thenReturn(wrongPassword);
 
         // when
-        String viewName = controller.service(request, response);
+        String viewName = controller.process(request, response);
 
         // then
         assertEquals("redirect:/user/loginFailed.jsp", viewName);
@@ -92,7 +92,7 @@ class LoginUserControllerTest {
         when(request.getParameter("password")).thenReturn(password);
 
         // when
-        String viewName = controller.service(request, response);
+        String viewName = controller.process(request, response);
 
         // then
         assertEquals("redirect:/user/loginFailed.jsp", viewName);

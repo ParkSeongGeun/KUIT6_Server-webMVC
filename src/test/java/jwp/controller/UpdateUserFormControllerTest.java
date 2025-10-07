@@ -51,7 +51,7 @@ class UpdateUserFormControllerTest {
         when(session.getAttribute("user")).thenReturn(sessionUser);
         when(request.getParameter("userId")).thenReturn(userId);
         // when
-        String view = controller.service(request, response);
+        String view = controller.process(request, response);
 
         // then
         assertEquals("/user/updateForm.jsp", view);
@@ -70,7 +70,7 @@ class UpdateUserFormControllerTest {
         when(request.getParameter("userId")).thenReturn(requestUserId);
 
         // when
-        String view = controller.service(request, response);
+        String view = controller.process(request, response);
 
         // then
         assertEquals("redirect:/", view);
@@ -87,7 +87,7 @@ class UpdateUserFormControllerTest {
         when(request.getParameter("userId")).thenReturn(requestUserId);
 
         // when
-        String view = controller.service(request, response);
+        String view = controller.process(request, response);
 
         // then
         assertEquals("redirect:/", view);

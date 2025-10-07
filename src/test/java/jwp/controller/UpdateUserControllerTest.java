@@ -58,7 +58,7 @@ class UpdateUserControllerTest {
         when(session.getAttribute("user")).thenReturn(originalUser);
 
         // when
-        String view = controller.service(request, response);
+        String view = controller.process(request, response);
 
         // then
         assertEquals("redirect:/user/list", view);
@@ -85,7 +85,7 @@ class UpdateUserControllerTest {
         when(session.getAttribute("user")).thenReturn(sessionUser);
 
         // when
-        String view = controller.service(request, response);
+        String view = controller.process(request, response);
 
         // then
         assertEquals("redirect:/user/list", view);

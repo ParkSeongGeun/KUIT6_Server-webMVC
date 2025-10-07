@@ -19,7 +19,7 @@ import java.io.IOException;
 public class LoginUserController implements Controller {
 
     @Override
-    public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // GET 요청: 로그인 폼 보여주기
         if ("GET".equals(request.getMethod())) {
             return "/user/login.jsp";

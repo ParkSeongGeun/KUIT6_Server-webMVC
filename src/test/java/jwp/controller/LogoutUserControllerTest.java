@@ -40,7 +40,7 @@ class LogoutUserControllerTest {
         when(request.getSession()).thenReturn(session);
 
         // when
-        String viewName = controller.service(request, response);
+        String viewName = controller.process(request, response);
 
         // then
         assertEquals("redirect:/", viewName);

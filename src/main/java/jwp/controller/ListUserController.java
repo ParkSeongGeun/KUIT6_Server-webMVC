@@ -17,7 +17,7 @@ import java.util.Collection;
  */
 public class ListUserController implements Controller {
     @Override
-    public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 세션에서 로그인 정보 확인
         HttpSession session = request.getSession();
         Object value = session.getAttribute("user");

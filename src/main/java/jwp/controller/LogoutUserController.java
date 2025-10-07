@@ -15,7 +15,7 @@ import java.io.IOException;
 public class LogoutUserController implements Controller {
 
     @Override
-    public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         return "redirect:/";
