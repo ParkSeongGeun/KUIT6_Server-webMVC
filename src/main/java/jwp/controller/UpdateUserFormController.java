@@ -3,8 +3,6 @@ package jwp.controller;
 import jwp.model.User;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,22 +16,20 @@ import java.io.IOException;
  * Request Param: userId(String)
  * Response: authorized -> ("/user/updateForm.jsp") forward, unauthorized -> ("/") redirect
  */
-@WebServlet("/user/updateForm")
-public class UpdateUserFormController extends HttpServlet {
+public class UpdateUserFormController implements Controller {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute("user");
         String requestUserId = request.getParameter("userId");
 
         // 세션에 사용자 정보가 없거나, 세션 사용자와 요청 userId가 다른 경우
         if (sessionUser == null || !sessionUser.getUserId().equals(requestUserId)) {
-            response.sendRedirect("/");
-            return;
+            return "redirect:/";
         }
 
         // 권한이 있는 경우 updateForm.jsp로 포워드
-        request.getRequestDispatcher("/user/updateForm.jsp").forward(request, response);
+        return "/user/updateForm.jsp";
     }
 }
