@@ -38,7 +38,7 @@ public class LoginUserController implements Controller {
             return "redirect:/";  // redirect로 변경
         } else {
             // 로그인 실패
-            return "redirect:/user/loginFailed.jsp";  // redirect로 변경
+            return "/user/loginFailed.jsp";  // redirect로 변경
         }
     }
 }
