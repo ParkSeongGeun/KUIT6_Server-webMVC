@@ -7,7 +7,6 @@ import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
 import jwp.model.User;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class UserDao {
@@ -18,7 +17,7 @@ public class UserDao {
         this.jdbcTemplate = new JdbcTemplate<>(connectionProvider);
     }
 
-    public void insert(User user) throws SQLException {
+    public void insert(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         PreparedStatementSetter setter = ps -> {
             ps.setString(1, user.getUserId());
@@ -29,7 +28,7 @@ public class UserDao {
         jdbcTemplate.update(sql, setter);
     }
 
-    public void update(User user) throws SQLException {
+    public void update(User user) {
         String sql = "UPDATE USERS SET PASSWORD = ?, NAME = ?, EMAIL = ? WHERE USERID = ?";
         PreparedStatementSetter psSetter = ps -> {
             ps.setString(1, user.getPassword());
@@ -40,7 +39,7 @@ public class UserDao {
         jdbcTemplate.update(sql, psSetter);
     }
 
-    public void delete(User user) throws SQLException {
+    public void delete(User user) {
         String sql = "DELETE FROM USERS WHERE USERID = ?";
         PreparedStatementSetter psSetter = ps -> {
             ps.setString(1, user.getUserId());
@@ -49,7 +48,7 @@ public class UserDao {
     }
 
     // TODO findAll, findByUserId
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() {
         String sql = "SELECT * FROM USERS";
         RowMapper<User> rowMapper = rs -> new User(
                 rs.getString("userId"),
@@ -60,7 +59,7 @@ public class UserDao {
         return jdbcTemplate.query(sql, rowMapper);
     }
 
-    public User findUserById(String userId) throws SQLException {
+    public User findUserById(String userId) {
         String sql = "SELECT * FROM USERS WHERE USERID = ?";
 
         PreparedStatementSetter psSetter = ps -> {

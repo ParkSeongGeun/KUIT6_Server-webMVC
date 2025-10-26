@@ -1,6 +1,7 @@
 package jwp.dao;
 
 import core.jdbc.ConnectionProvider;
+import core.jdbc.DataAccessException;
 import core.jdbc.TestConnectionManager;
 import jwp.model.User;
 import org.junit.jupiter.api.AfterEach;
@@ -40,11 +41,11 @@ class UserDaoTest {
     }
 
     @AfterEach
-    void tearDown() throws SQLException {
+    void tearDown() {
         cleanUpDatabase();
     }
 
-    private void cleanUpDatabase() throws SQLException {
+    private void cleanUpDatabase() {
         List<User> users = userDao.findAll();
         for (User user : users) {
             userDao.delete(user);
@@ -52,7 +53,7 @@ class UserDaoTest {
     }
 
     @Test
-    void insert() throws SQLException {
+    void insert() {
         // given
         User user = new User("testId", "password123", "Test User", "test@example.com");
 
@@ -69,7 +70,7 @@ class UserDaoTest {
     }
 
     @Test
-    void update() throws SQLException {
+    void update() {
         // given
         User user = new User("testId", "password123", "Test User", "test@example.com");
         userDao.insert(user);
@@ -86,7 +87,7 @@ class UserDaoTest {
     }
 
     @Test
-    void delete() throws SQLException {
+    void delete() {
         // given
         User user = new User("testId", "password123", "Test User", "test@example.com");
         userDao.insert(user);
@@ -99,7 +100,7 @@ class UserDaoTest {
     }
 
     @Test
-    void findAll() throws SQLException {
+    void findAll() {
         // given
         User user1 = new User("testId1", "password1", "User 1", "user1@example.com");
         User user2 = new User("testId2", "password2", "User 2", "user2@example.com");
@@ -117,7 +118,7 @@ class UserDaoTest {
     }
 
     @Test
-    void findUserById() throws SQLException {
+    void findUserById() {
         // given
         User user = new User("testId", "password123", "Test User", "test@example.com");
         userDao.insert(user);
@@ -134,18 +135,18 @@ class UserDaoTest {
     }
 
     @Test
-    void insertDuplicateUserId() throws SQLException {
+    void insertDuplicateUserId() {
         // given
         User user1 = new User("testId", "password123", "Test User", "test@example.com");
         userDao.insert(user1);
 
         // when & then
         User user2 = new User("testId", "password456", "Another User", "another@example.com");
-        assertThrows(SQLException.class, () -> userDao.insert(user2));
+        assertThrows(DataAccessException.class, () -> userDao.insert(user2));
     }
 
     @Test
-    void findUserByIdNotFound() throws SQLException {
+    void findUserByIdNotFound() {
         // given
         String nonExistentUserId = "nonExistentUser";
 

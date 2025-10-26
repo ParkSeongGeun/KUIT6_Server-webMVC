@@ -15,15 +15,17 @@ public class JdbcTemplate<T> {
         this.connectionProvider = connectionProvider;
     }
 
-    public void update(String sql, PreparedStatementSetter psSetter) throws SQLException {
+    public void update(String sql, PreparedStatementSetter psSetter) {
         try(Connection conn = connectionProvider.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             psSetter.setParameters(ps);
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         }
     }
 
-    public List<T> query(String sql, RowMapper<T> rowMapper) throws SQLException {
+    public List<T> query(String sql, RowMapper<T> rowMapper) {
         List<T> objects = new ArrayList<T>();
 
         try(Connection conn = connectionProvider.getConnection();
@@ -33,26 +35,26 @@ public class JdbcTemplate<T> {
                 T obj = rowMapper.mapRow(rs);
                 objects.add(obj);
             }
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         }
 
         return objects;
     }
 
-    public T queryForObject(String sql, PreparedStatementSetter psSetter, RowMapper<T> rowMapper) throws SQLException {
-        ResultSet rs = null;
+    public T queryForObject(String sql, PreparedStatementSetter psSetter, RowMapper<T> rowMapper) {
         T obj = null;
 
         try(Connection conn = connectionProvider.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);) {
             psSetter.setParameters(ps);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                obj = rowMapper.mapRow(rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rowMapper.mapRow(rs);
+                }
             }
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         }
 
         return obj;
