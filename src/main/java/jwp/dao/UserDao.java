@@ -1,5 +1,7 @@
 package jwp.dao;
 
+import core.jdbc.ConnectionManager;
+import core.jdbc.ConnectionProvider;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.PreparedStatementSetter;
 import core.jdbc.RowMapper;
@@ -10,7 +12,11 @@ import java.util.List;
 
 public class UserDao {
 
-    private final JdbcTemplate<User> jdbcTemplate = new JdbcTemplate<>();
+    private final JdbcTemplate<User> jdbcTemplate;
+
+    public UserDao(ConnectionProvider connectionProvider) {
+        this.jdbcTemplate = new JdbcTemplate<>(connectionProvider);
+    }
 
     public void insert(User user) throws SQLException {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
@@ -24,7 +30,7 @@ public class UserDao {
     }
 
     public void update(User user) throws SQLException {
-        String sql = "UPDATE USERS SET PASSWORD = ? NAME = ?, EMAIL = ? WHERE USER_ID = ?";
+        String sql = "UPDATE USERS SET PASSWORD = ?, NAME = ?, EMAIL = ? WHERE USERID = ?";
         PreparedStatementSetter psSetter = ps -> {
             ps.setString(1, user.getPassword());
             ps.setString(2, user.getName());
@@ -35,7 +41,7 @@ public class UserDao {
     }
 
     public void delete(User user) throws SQLException {
-        String sql = "DELETE FROM USERS WHERE USER_ID = ?";
+        String sql = "DELETE FROM USERS WHERE USERID = ?";
         PreparedStatementSetter psSetter = ps -> {
             ps.setString(1, user.getUserId());
         };
@@ -55,7 +61,7 @@ public class UserDao {
     }
 
     public User findUserById(String userId) throws SQLException {
-        String sql = "SELECT * FROM USERS WHERE USER_ID = ?";
+        String sql = "SELECT * FROM USERS WHERE USERID = ?";
 
         PreparedStatementSetter psSetter = ps -> {
             ps.setString(1, userId);
