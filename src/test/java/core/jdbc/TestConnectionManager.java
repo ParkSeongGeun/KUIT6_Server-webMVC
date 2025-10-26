@@ -6,13 +6,14 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ConnectionManager implements ConnectionProvider {
+public class TestConnectionManager implements ConnectionProvider {
     private static final String DB_DRIVER = "org.h2.Driver";
-    private static final String DB_URL = "jdbc:h2:~/jwp-basic";
+    private static final String DB_URL = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
     private static final String DB_USERNAME = "sa";
     private static final String DB_PW = "";
 
     private static BasicDataSource ds;
+
     public static DataSource getDataSource() {
         if (ds == null) {
             ds = new BasicDataSource();
@@ -24,6 +25,7 @@ public class ConnectionManager implements ConnectionProvider {
         return ds;
     }
 
+    @Override
     public Connection getConnection() {
         try {
             return getDataSource().getConnection();
