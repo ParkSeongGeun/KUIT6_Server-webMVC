@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="article-doc">
-                <p>${question.content}</p>
+                <p>${question.contents}</p>
             </div>
 
             <div class="article-util">
