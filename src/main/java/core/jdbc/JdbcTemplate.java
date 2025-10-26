@@ -9,82 +9,48 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcTemplate {
+public class JdbcTemplate<T> {
 
     public void update(String sql, PreparedStatementSetter psSetter) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-
-        try {
-            conn = ConnectionManager.getConnection();
-            ps = conn.prepareStatement(sql);
+        try(Connection conn = ConnectionManager.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);) {
             psSetter.setParameters(ps);
             ps.executeUpdate();
-        } finally {
-            if (ps != null) {
-                ps.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
         }
     }
 
-    public List<User> query(String sql, RowMapper rowMapper) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<User> users = new ArrayList<User>();
+    public List<T> query(String sql, RowMapper<T> rowMapper) throws SQLException {
+        List<T> objects = new ArrayList<T>();
 
-        try {
-            conn = ConnectionManager.getConnection();
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
+        try(Connection conn = ConnectionManager.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();) {
             while (rs.next()) {
-                User user = rowMapper.mapRow(rs);
-                users.add(user);
-            }
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (ps != null) {
-                ps.close();
-            }
-            if (conn != null) {
-                conn.close();
+                T obj = rowMapper.mapRow(rs);
+                objects.add(obj);
             }
         }
 
-        return users;
+        return objects;
     }
 
-    public User queryForObject(String sql, PreparedStatementSetter psSetter, RowMapper rowMapper) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
+    public T queryForObject(String sql, PreparedStatementSetter psSetter, RowMapper<T> rowMapper) throws SQLException {
         ResultSet rs = null;
-        User user = null;
+        T obj = null;
 
-        try {
-            conn = ConnectionManager.getConnection();
-            ps = conn.prepareStatement(sql);
+        try(Connection conn = ConnectionManager.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);) {
             psSetter.setParameters(ps);
             rs = ps.executeQuery();
             if (rs.next()) {
-                user = rowMapper.mapRow(rs);
+                obj = rowMapper.mapRow(rs);
             }
         } finally {
             if (rs != null) {
                 rs.close();
             }
-            if (ps != null) {
-                ps.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
         }
 
-        return user;
+        return obj;
     }
 }
