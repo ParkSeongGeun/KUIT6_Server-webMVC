@@ -28,6 +28,26 @@ public class QuestionDao {
         Long questionId = keyHolder.getId();
         return findByQuestionId(questionId);
     }
+
+    public Question findByQuestionId(Long questionId) {
+        String sql = "SELECT * FROM QUESTIONS WHERE questionId = ?";
+
+        PreparedStatementSetter setter = ps -> {
+            ps.setLong(1, questionId);
+        };
+
+        RowMapper<Question> rowMapper = rs -> new Question(
+                rs.getLong("questionId"),
+                rs.getString("writer"),
+                rs.getString("title"),
+                rs.getString("contents"),
+                rs.getTimestamp("createdDate").toLocalDateTime(),
+                rs.getInt("countOfAnswer")
+        );
+
+        return jdbcTemplate.queryForObject(sql, setter, rowMapper);
+    }
+
     public List<Question> findAll() {
         String sql = "SELECT * FROM QUESTIONS";
         RowMapper<Question> rowMapper = rs -> new Question(
