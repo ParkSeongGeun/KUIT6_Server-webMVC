@@ -3,6 +3,7 @@ package core.mvc;
 import core.jdbc.ConnectionManager;
 import core.jdbc.ConnectionProvider;
 import jwp.controller.*;
+import jwp.dao.QuestionDao;
 import jwp.dao.UserDao;
 
 import java.util.HashMap;
@@ -15,8 +16,9 @@ public class RequestMapping {
     static {
         ConnectionProvider connectionProvider = new ConnectionManager();
         UserDao userDao = new UserDao(connectionProvider);
+        QuestionDao questionDao = new QuestionDao(connectionProvider);
 
-        controllers.put("/", new HomeController());
+        controllers.put("/", new HomeController(questionDao));
         controllers.put("/user/signup", new CreateUserController(userDao));
         controllers.put("/user/list", new ListUserController());
         controllers.put("/user/login", new LoginController());
