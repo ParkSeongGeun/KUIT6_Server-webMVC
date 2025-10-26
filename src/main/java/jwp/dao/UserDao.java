@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserDao {
 
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private final JdbcTemplate<User> jdbcTemplate = new JdbcTemplate<>();
 
     public void insert(User user) throws SQLException {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
@@ -45,7 +45,7 @@ public class UserDao {
     // TODO findAll, findByUserId
     public List<User> findAll() throws SQLException {
         String sql = "SELECT * FROM USERS";
-        RowMapper rowMapper = rs -> new User(
+        RowMapper<User> rowMapper = rs -> new User(
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
@@ -61,7 +61,7 @@ public class UserDao {
             ps.setString(1, userId);
         };
 
-        RowMapper rowMapper = rs -> new User(
+        RowMapper<User> rowMapper = rs -> new User(
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
