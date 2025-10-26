@@ -1,7 +1,5 @@
 package core.jdbc;
 
-import jwp.model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,8 +9,14 @@ import java.util.List;
 
 public class JdbcTemplate<T> {
 
+    private final ConnectionProvider connectionProvider;
+
+    public JdbcTemplate(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
+    }
+
     public void update(String sql, PreparedStatementSetter psSetter) throws SQLException {
-        try(Connection conn = ConnectionManager.getConnection();
+        try(Connection conn = connectionProvider.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);) {
             psSetter.setParameters(ps);
             ps.executeUpdate();
@@ -22,7 +26,7 @@ public class JdbcTemplate<T> {
     public List<T> query(String sql, RowMapper<T> rowMapper) throws SQLException {
         List<T> objects = new ArrayList<T>();
 
-        try(Connection conn = ConnectionManager.getConnection();
+        try(Connection conn = connectionProvider.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();) {
             while (rs.next()) {
@@ -38,7 +42,7 @@ public class JdbcTemplate<T> {
         ResultSet rs = null;
         T obj = null;
 
-        try(Connection conn = ConnectionManager.getConnection();
+        try(Connection conn = connectionProvider.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);) {
             psSetter.setParameters(ps);
             rs = ps.executeQuery();
