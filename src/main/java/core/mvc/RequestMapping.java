@@ -21,7 +21,7 @@ public class RequestMapping {
         controllers.put("/", new HomeController(questionDao));
         controllers.put("/user/signup", new CreateUserController(userDao));
         controllers.put("/user/list", new ListUserController());
-        controllers.put("/user/login", new LoginController());
+        controllers.put("/user/login", new LoginController(userDao));
         controllers.put("/user/logout", new LogoutController());
         controllers.put("/user/update", new UpdateUserController());
         controllers.put("/user/updateForm", new UpdateUserFormController());
@@ -30,7 +30,7 @@ public class RequestMapping {
         controllers.put("/user/loginForm", new ForwardController("/user/login.jsp"));
         controllers.put("/user/loginFailed", new ForwardController("/user/loginFailed.jsp"));
 
-        controllers.put("/qna/form", new ForwardController("/qna/form.jsp"));
+        controllers.put("/qna/form", new CreateQuestionFormController());
         controllers.put("/qna/show", new ForwardController("/qna/show.jsp"));
 
     }
