@@ -31,6 +31,7 @@ public class RequestMapping {
         controllers.put("/user/loginFailed", new ForwardController("/user/loginFailed.jsp"));
 
         controllers.put("/qna/form", new CreateQuestionFormController());
+        controllers.put("/qna/create", new CreateQuestionController(questionDao));
         controllers.put("/qna/show", new ForwardController("/qna/show.jsp"));
 
     }
