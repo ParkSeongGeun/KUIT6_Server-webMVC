@@ -21,7 +21,7 @@
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time">${question.createdDate}</span>
-                                <span clas="author">${question.writer}</span>
+                                <span class="author">${question.writer}</span>
                                     <%-- profile 관련 api 구현 --%>
                                     <%-- <a href="./user/profile.jsp" class="author">${question.writer}</a> --%>
                             </div>

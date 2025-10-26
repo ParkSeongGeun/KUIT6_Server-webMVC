@@ -31,10 +31,13 @@ public class JdbcTemplate<T> {
             psSetter.setParameters(ps);
             ps.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                keyHolder.setId(rs.getLong(1));
-            }
+           try (ResultSet rs = ps.getGeneratedKeys()) {
+               if (rs.next()) {
+                   keyHolder.setId(rs.getLong(1));
+               } else {
+                   throw new IllegalStateException("Generated key not found");
+               }
+           }
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
