@@ -17,13 +17,13 @@ public class UserDao {
         this.jdbcTemplate = new JdbcTemplate<>(connectionProvider);
     }
 
-    public void insert(User user) {
+    public void insert(String userId, String password, String name, String email) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         PreparedStatementSetter setter = ps -> {
-            ps.setString(1, user.getUserId());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getName());
-            ps.setString(4, user.getEmail());
+            ps.setString(1, userId);
+            ps.setString(2, password);
+            ps.setString(3, name);
+            ps.setString(4, email);
         };
         jdbcTemplate.update(sql, setter);
     }

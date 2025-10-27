@@ -2,7 +2,6 @@ package jwp.controller;
 
 import core.mvc.Controller;
 import jwp.dao.UserDao;
-import jwp.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +16,19 @@ public class CreateUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        User user = new User(req.getParameter("userId"),
-                req.getParameter("password"),
-                req.getParameter("name"),
-                req.getParameter("email"));
-        userDao.insert(user);
-        System.out.println("user 회원가입 완료");
+        String userId = req.getParameter("userId");
+        String password = req.getParameter("password");
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+
+        if (userId == null || userId.trim().isEmpty() ||
+                password == null || password.trim().isEmpty() ||
+                name == null || name.trim().isEmpty() ||
+                email == null || email.trim().isEmpty()) {
+            return "redirect:/user/form";
+        }
+
+        userDao.insert(userId, password, name, email);
         return "redirect:/user/list";
     }
 }
