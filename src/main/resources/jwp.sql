@@ -1,12 +1,12 @@
 DROP TABLE IF EXISTS USERS;
 
 CREATE TABLE USERS (
-                       userId          varchar(12)		NOT NULL,
+                       userId          varchar(12)		NOT NULL UNIQUE,
                        password		varchar(12)		NOT NULL,
                        name			varchar(20)		NOT NULL,
                        email			varchar(50),
 
-                       PRIMARY KEY               (userId)
+                       PRIMARY KEY               (id)
 );
 
 INSERT INTO USERS VALUES('admin', 'password', '이영선', 'admin@naver.com');

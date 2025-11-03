@@ -1,47 +1,39 @@
 package jwp.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
+@Table(name = "QUESTIONS")
+@Getter
+@NoArgsConstructor
 public class Question {
-     private final Long questionId;
-     private final String writer;
-     private final String title;
-     private final String contents;
-     private final LocalDateTime createdDate;
-     private final int countOfAnswer;
 
-     public Question(Long questionId, String writer, String title, String contents, LocalDateTime createdDate, int countOfAnswer) {
-         this.questionId = questionId;
-         this.writer = writer;
-         this.title = title;
-         this.contents = contents;
-         this.createdDate = createdDate;
-         this.countOfAnswer = countOfAnswer;
-     }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long questionId;
 
-    public Long getQuestionId() {
-        return questionId;
-    }
+    private String writer;
 
-    public String getWriter() {
-        return writer;
-    }
+    private String title;
 
-    public String getTitle() {
-        return title;
-    }
+    @Lob
+    private String contents;
 
-    public String getContents() {
-        return contents;
-    }
+    private LocalDateTime createdDate;
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
+    private Integer countOfAnswer;
 
-    public int getCountOfAnswer() {
-        return countOfAnswer;
+    public Question(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = LocalDateTime.now();
+        this.countOfAnswer = 0;
     }
 
     @Override
